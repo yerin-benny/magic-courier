@@ -215,6 +215,12 @@ export function renderMapScreen(root, params, nav) {
   mapPanel.append(el('h3', 'panel__title', '여행 경로'));
   mapPanel.append(frame);
 
+  // 지도와 나라 목록은 붙여 두면 지도 아래쪽에 겹쳐 보인다. 사이에 작은 머리글을 넣어 떼어 놓는다.
+  const listHead = el('div', 'panel__subhead');
+  listHead.append(el('h4', 'panel__subtitle', '이번 회차에 갈 나라'));
+  listHead.append(el('span', 'panel__subhint', '순서대로 배달해요'));
+  mapPanel.append(listHead);
+
   const list = el('ol', 'route-list');
   route.countries.forEach((id, i) => {
     const c = getCountry(id);

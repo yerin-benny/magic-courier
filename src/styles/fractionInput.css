@@ -56,25 +56,32 @@
 /* ---- 키패드 ---- */
 .fi-keypad { display: flex; flex-direction: column; gap: 9px; }
 .fi-keypad__row { display: flex; gap: 9px; }
+/* 숫자 키는 흰 바탕 + 테두리로 둔다.
+   카드(크림)와 같은 크림색이면 숫자만 떠 있는 것처럼 보여 버튼인지 알기 어렵다 (2026-09-16 사용자 지적). */
 .fi-key {
   flex: 1;
   min-width: 76px;
   height: 58px;
-  border: none;
+  box-sizing: border-box;
+  border: 2px solid var(--paper-edge);
   border-radius: 18px;
-  background: var(--paper);
+  background: #fff;
   color: var(--purple);
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 28px;
   cursor: pointer;
   box-shadow: 0 4px 0 var(--paper-edge);
   touch-action: manipulation;
-  transition: transform 0.06s;
+  transition: transform 0.06s, background 0.1s;
 }
+.fi-key:hover { background: #FFFBF2; }
 .fi-key:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--paper-edge); }
-.fi-key--clear, .fi-key--backspace, .fi-key--next { background: var(--sky); font-size: 18px; box-shadow: 0 4px 0 var(--sky-deep); }
+.fi-key--clear, .fi-key--backspace, .fi-key--next {
+  background: var(--sky); border-color: var(--sky-deep); font-size: 18px; box-shadow: 0 4px 0 var(--sky-deep);
+}
+.fi-key--clear:hover, .fi-key--backspace:hover, .fi-key--next:hover { background: #DEEBF7; }
 .fi-key--clear:active, .fi-key--backspace:active, .fi-key--next:active { box-shadow: 0 1px 0 var(--sky-deep); }
-.fi-key--submit { background: var(--amber); color: #fff; font-size: 22px; flex: 2; box-shadow: 0 4px 0 var(--amber-deep); text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12); }
+.fi-key--submit { background: var(--amber); border-color: var(--amber-deep); color: #fff; font-size: 22px; flex: 2; box-shadow: 0 4px 0 var(--amber-deep); text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12); }
 .fi-key--submit:active { box-shadow: 0 1px 0 var(--amber-deep); }
 .fi-key--next { flex: 1; }
 .fraction-input.is-locked .fi-key { opacity: 0.5; pointer-events: none; }

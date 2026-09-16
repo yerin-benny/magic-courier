@@ -710,10 +710,10 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 .screen--problem .fi-message { min-height: 22px; font-size: 16px; }
 .screen--problem .fi-keypad,
 .screen--problem .fi-keypad__row { gap: 7px; }
-.screen--problem .fi-key { height: 44px; min-width: 58px; font-size: 22px; border-radius: 14px; }
+.screen--problem .fi-key { height: 44px; min-width: 58px; font-size: 25px; border-radius: 14px; }
 .screen--problem .fi-key--clear,
 .screen--problem .fi-key--backspace,
-.screen--problem .fi-key--next { font-size: 16px; }
+.screen--problem .fi-key--next { font-size: 17px; }
 .screen--problem .fi-key--submit { font-size: 19px; }
 .screen--problem .problem-area { min-height: 112px; }
 .screen--problem .fraction-input { gap: 8px; }
@@ -722,3 +722,12 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 .screen--problem .fi-keypad,
 .screen--problem .fi-keypad__row { gap: 6px; }
 .screen--problem .pb-answer { padding-bottom: 10px; }
+
+/* 지도 / 나라 목록 / 지리 둘러보기를 눈으로 갈라 준다 (붙어 있으면 지도와 목록이 겹쳐 보인다) */
+.panel__subhead {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin: 18px 0 10px; padding-top: 14px;
+  border-top: 2px dashed var(--paper-edge);
+}
+.panel__subtitle { font-family: var(--font-display); font-size: 17px; color: var(--purple); margin: 0; }
+.panel__subhint { font-size: 13px; color: var(--ink-soft); }
