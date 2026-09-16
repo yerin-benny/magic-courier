@@ -120,60 +120,75 @@
 }
 .request__count { grid-column: 1 / -1; margin: 6px 0 0; color: var(--ink-soft); font-family: var(--font-display); }
 
-/* ---- 진행도 ---- */
-.progress { width: 100%; display: flex; align-items: center; justify-content: space-between; }
-.progress__dots { display: flex; gap: 10px; }
-.progress__dot { width: 18px; height: 18px; border-radius: 50%; background: var(--paper); border: 3px solid var(--paper-edge); box-sizing: border-box; }
-.progress__dot.is-done { background: var(--sage); border-color: var(--sage-deep); }
-.progress__dot.is-current { border-color: var(--amber); background: #fff; box-shadow: 0 0 0 4px rgba(232, 168, 56, 0.3); }
-.progress__label { font-family: var(--font-display); font-size: 20px; color: var(--purple); text-shadow: 0 2px 0 rgba(255, 255, 255, 0.7); }
+/* ---- 7. 문제 풀이 화면 (2026-09-16 개편: 문제와 키패드를 한 화면에) ---- */
+.screen--problem { max-width: 1180px; align-items: stretch; gap: 10px; }
 
-/* ---- 캐릭터 비행 트랙 ---- */
-.track {
-  position: relative;
-  width: 100%;
-  height: 96px;
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 12% 70%, rgba(255, 255, 255, 0.9) 0 14px, transparent 15px),
-    radial-gradient(circle at 20% 60%, rgba(255, 255, 255, 0.9) 0 18px, transparent 19px),
-    radial-gradient(circle at 28% 72%, rgba(255, 255, 255, 0.9) 0 12px, transparent 13px),
-    radial-gradient(circle at 62% 30%, rgba(255, 255, 255, 0.8) 0 12px, transparent 13px),
-    radial-gradient(circle at 69% 24%, rgba(255, 255, 255, 0.8) 0 16px, transparent 17px),
-    radial-gradient(circle at 76% 32%, rgba(255, 255, 255, 0.8) 0 10px, transparent 11px),
-    linear-gradient(180deg, #DDEBF7, var(--sky));
-  border: 3px solid rgba(255, 255, 255, 0.8);
-  box-sizing: border-box;
-  overflow: visible;
+.pb-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; }
+.pb-back {
+  justify-self: start; border: none; cursor: pointer;
+  background: rgba(255, 249, 238, 0.85); color: var(--ink-soft);
+  font-family: var(--font-display); font-size: 16px; padding: 8px 18px; border-radius: 999px;
+  box-shadow: 0 3px 0 var(--paper-edge);
 }
-.track__path { position: absolute; left: 40px; right: 96px; top: 58px; height: 0; border-top: 3px dashed rgba(78, 67, 112, 0.25); }
-.track__goal {
-  position: absolute; right: 10px; top: 12px;
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  font-family: var(--font-display); font-size: 12px; color: var(--purple); max-width: 90px; text-align: center; line-height: 1.2;
+.pb-back:hover { color: var(--purple); }
+.pb-title { font-family: var(--font-display); font-size: 19px; color: var(--purple); text-align: center; }
+.pb-count { justify-self: end; font-family: var(--font-display); font-size: 19px; color: var(--ink-soft); }
+
+/* 진행도 띠. 캐릭터가 그 위를 한 칸씩 건너간다 (예전의 비행 트랙을 여기에 합쳤다) */
+.pb-steps-wrap { position: relative; padding-top: 34px; }
+.pb-steps { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 8px; }
+.pb-step {
+  height: 30px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255, 255, 255, 0.65); color: var(--ink-soft);
+  font-family: var(--font-display); font-size: 15px;
+  border: 2px solid var(--paper-edge); box-sizing: border-box;
 }
-.track__goal img { width: 44px; height: 44px; object-fit: contain; }
-.courier {
-  position: absolute;
-  top: 6px;
-  left: 0;
-  width: 72px;
-  height: 72px;
-  margin-left: 0;
+.pb-step.is-done { background: var(--lavender); border-color: var(--purple); color: #fff; }
+.pb-step.is-current { background: #fff; border-color: var(--amber); color: var(--amber-deep); box-shadow: 0 0 0 4px rgba(232, 168, 56, 0.25); }
+
+.pb-courier {
+  position: absolute; top: 0; left: 10%;
+  width: 46px; height: 46px; margin-left: -23px;
   transition: left 0.35s ease-out; /* 정답 연출, 0.4초 이내 */
   animation: bob 1.6s ease-in-out infinite;
+  pointer-events: none;
 }
-.courier img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 0 rgba(78, 67, 112, 0.15)); }
-.courier--instant { transition: none; }
+.pb-courier img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 0 rgba(78, 67, 112, 0.15)); }
+.pb-courier--instant { transition: none; }
+.pb-courier--placeholder::before { content: ''; position: absolute; left: 14px; top: 20px; width: 28px; height: 28px; border-radius: 50%; background: var(--lavender); }
+
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-@media (prefers-reduced-motion: reduce) { .courier, .map__courier-img, .passport-cover { animation: none; } }
-/* 자산이 없을 때의 플레이스홀더 */
-.courier--placeholder::before { content: ''; position: absolute; left: 20px; top: 24px; width: 32px; height: 32px; border-radius: 50%; background: var(--lavender); }
-.courier--placeholder::after { content: ''; position: absolute; left: 24px; top: 8px; width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 18px solid var(--purple); }
+@media (prefers-reduced-motion: reduce) { .pb-courier, .map__courier-img, .passport-cover, .courier-card__me, .start__flier, .login__face { animation: none; } }
+
+/* 좌우 두 단: 왼쪽 문제, 오른쪽 답 칸과 키패드 */
+.pb-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .pb-layout { grid-template-columns: 1fr; } }
+
+.pb-problem { display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; }
+.pb-problem__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pb-problem__no { font-family: var(--font-display); font-size: 14px; color: var(--lavender); }
+.pb-problem__tag {
+  font-size: 13px; color: var(--purple); background: var(--sky);
+  border-radius: 999px; padding: 4px 12px; white-space: nowrap;
+}
+.pb-problem__line { font-family: var(--font-display); font-size: 24px; color: var(--purple); margin: 0; }
+.pb-problem__foot { display: flex; align-items: center; justify-content: flex-end; }
+.pb-reward { font-size: 13px; color: var(--ink-soft); }
+
+.pb-answer { padding: 12px 16px 14px; }
+.pb-answer__title { font-family: var(--font-display); font-size: 15px; color: var(--ink-soft); text-align: center; margin-bottom: 4px; }
 
 /* ---- 문제 ---- */
-.problem-area { display: flex; justify-content: center; align-items: center; min-height: 96px; font-size: 32px; }
-.problem-area::before { content: ''; position: absolute; inset: 8px; border: 2px dashed var(--paper-edge); border-radius: 18px; pointer-events: none; }
+/* 문제 식이 놓이는 자리. 점선 종이 틀 안에 넣는다 (예전에는 카드 자체가 이 역할을 했다) */
+.problem-area {
+  position: relative;
+  display: flex; justify-content: center; align-items: center;
+  min-height: 132px; font-size: 32px;
+  border: 2px dashed var(--paper-edge); border-radius: 18px;
+  padding: 14px 16px; box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.45);
+}
 .problem { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; position: relative; }
 .problem--sentence { font-size: 22px; line-height: 1.7; display: block; }
 .problem__q { font-family: var(--font-display); color: var(--amber-deep); }
@@ -632,11 +647,6 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 .screen--shop .shop__body, .screen--ranking .ranking__body { align-items: stretch; }
 .screen--ranking .ranking__tabs { justify-content: center; }
 
-/* 문제 풀이 화면의 나가기 (상단 내비는 이 화면에서 숨긴다) */
-.problem-exit { width: 100%; display: flex; align-items: center; gap: 10px; }
-.problem-exit__btn { background: rgba(255, 249, 238, 0.85); }
-.problem-exit__note { font-size: 13px; color: var(--ink-soft); }
-
 /* ---- 지도의 지리 요소 (6학년 사회 "세계의 여러 나라") ---- */
 .map__line { stroke: rgba(78, 67, 112, 0.28); stroke-width: 1.5; stroke-dasharray: 7 6; }
 .map__line-label { font-family: var(--font-display); font-size: 12px; fill: var(--purple); opacity: 0.65; }
@@ -688,3 +698,27 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 .continent__bar { height: 10px; border-radius: 999px; background: var(--paper-edge); overflow: hidden; }
 .continent__fill { height: 100%; border-radius: 999px; background: var(--sage); }
 .continent__count { font-family: var(--font-display); font-size: 14px; color: var(--ink-soft); }
+
+/* 문제 화면에서는 입력 칸과 키패드를 조금 조밀하게 쓴다.
+   1366×768 학교 PC 에서 문제와 키패드가 한 화면에 들어와야 한다 (스크롤 금지).
+   누르는 칸은 44px 아래로 내리지 않는다 — 전자칠판 터치가 빗나간다. */
+.screen--problem .fi-cell__input { width: 60px; height: 48px; font-size: 26px; }
+.screen--problem .fi-cell--whole .fi-cell__input { height: 76px; }
+.screen--problem .fi-fraction__bar { width: 60px; }
+.screen--problem .fi-cells { gap: 10px; font-size: 24px; }
+.screen--problem .fi-op { font-size: 26px; }
+.screen--problem .fi-message { min-height: 22px; font-size: 16px; }
+.screen--problem .fi-keypad,
+.screen--problem .fi-keypad__row { gap: 7px; }
+.screen--problem .fi-key { height: 44px; min-width: 58px; font-size: 22px; border-radius: 14px; }
+.screen--problem .fi-key--clear,
+.screen--problem .fi-key--backspace,
+.screen--problem .fi-key--next { font-size: 16px; }
+.screen--problem .fi-key--submit { font-size: 19px; }
+.screen--problem .problem-area { min-height: 112px; }
+.screen--problem .fraction-input { gap: 8px; }
+.screen--problem .fi-cell { gap: 2px; }
+.screen--problem .fi-cell__label { font-size: 11px; }
+.screen--problem .fi-keypad,
+.screen--problem .fi-keypad__row { gap: 6px; }
+.screen--problem .pb-answer { padding-bottom: 10px; }
