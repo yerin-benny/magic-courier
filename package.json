@@ -16,7 +16,8 @@
     "assets:flags": "node scripts/copyFlags.mjs",
     "assets:cut": "python scripts/cutAssets.py",
     "sync:functions": "node scripts/syncFunctionsLib.mjs",
-    "verify:functions": "node scripts/syncFunctionsLib.mjs --verify"
+    "verify:functions": "node scripts/syncFunctionsLib.mjs --verify",
+    "deploy": "node scripts/deployPages.mjs"
   },
   "devDependencies": {
     "vite": "^6.3.5",
