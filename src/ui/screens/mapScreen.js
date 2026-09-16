@@ -262,7 +262,7 @@ export function renderMapScreen(root, params, nav) {
   const resumeScreen = session ? (session.isComplete ? 'success' : 'problem') : 'request';
 
   // 수도·현재 위치·이번 배송을 같은 줄 모양으로 늘어놓고, 그 아래 나라 소개를 붙인다.
-  const rows = el('dl', 'next__rows');
+  const rows = el('dl', 'info-rows');
   rows.append(el('dt', null, '수도'), el('dd', null, dest.capital));
   rows.append(el('dt', null, '지금 있는 곳'), el('dd', null, getCountry(locationId).name));
   rows.append(
@@ -279,29 +279,25 @@ export function renderMapScreen(root, params, nav) {
       () => nav.go(resumeScreen),
     ),
   );
-  layout.append(next);
+  // 오른쪽 기둥 = 나와 내 진행 (다음 목적지 · 빗자루 · 누적 기록).
+  // 왼쪽은 여행지 정보(지도·나라 목록·지리)라서, 오른쪽에 하나만 두면 아래가 크게 빈다.
+  const side = el('div', 'map-side');
+  side.append(next, renderBroomCard(nav), renderRecordCard());
+  layout.append(side);
   screen.append(layout);
-
-  // ---- 아래 줄: 지금 타는 빗자루 + 누적 기록 ----
-  screen.append(renderBroomCard(nav));
-
-  const stats = el('div', 'stat-row');
-  stats.append(statCard('모은 스탬프', `${gameState.visited.length}`, `/ ${COUNTRIES.length}개국`));
-  stats.append(statCard('완료한 배송', `${gameState.totals.deliveries}`, '건'));
-  stats.append(statCard('모은 별가루', `${gameState.totals.stardust}`, '✦'));
-  screen.append(stats);
 
   root.append(screen);
 }
 
-/** 작은 숫자 카드 */
-function statCard(label, value, unit) {
-  const card = el('div', 'card stat');
-  card.append(el('div', 'stat__label', label));
-  const row = el('div', 'stat__value');
-  row.append(el('strong', null, value));
-  row.append(el('span', 'stat__unit', unit));
-  card.append(row);
+/** 누적 기록 카드 (좁은 기둥에 맞춰 줄로 세운다) */
+function renderRecordCard() {
+  const card = el('div', 'card panel');
+  card.append(el('div', 'panel__eyebrow', '나의 기록'));
+  const rows = el('dl', 'info-rows');
+  rows.append(el('dt', null, '모은 스탬프'), el('dd', null, `${gameState.visited.length} / ${COUNTRIES.length}개국`));
+  rows.append(el('dt', null, '완료한 배송'), el('dd', null, `${gameState.totals.deliveries}건`));
+  rows.append(el('dt', null, '모은 별가루'), el('dd', null, `✦ ${gameState.totals.stardust}`));
+  card.append(rows);
   return card;
 }
 
@@ -341,15 +337,16 @@ function renderBroomCard(nav) {
   // 다음 단계까지 얼마나 남았는지 별가루로 알려 준다
   const nextBroom = brooms.find((b) => !ownsItem(doc, b.id));
   const aside = el('div', 'broom-card__aside');
+  const note = el('div', 'broom-card__aside-note');
   if (nextBroom) {
     const short = Math.max(0, nextBroom.price - balanceOf(doc));
-    aside.append(el('div', 'broom-card__aside-label', '다음 빗자루까지'));
-    aside.append(el('div', 'broom-card__aside-value', short ? `✦ ${short}` : '지금 살 수 있어요'));
-    aside.append(button('꾸미기로 가기', 'btn btn--sm', () => nav.go('shop')));
+    note.append(el('div', 'broom-card__aside-label', '다음 빗자루까지'));
+    note.append(el('div', 'broom-card__aside-value', short ? `✦ ${short}` : '지금 살 수 있어요'));
   } else {
-    aside.append(el('div', 'broom-card__aside-label', '빗자루를 모두 모았어요'));
-    aside.append(button('꾸미기로 가기', 'btn btn--sm', () => nav.go('shop')));
+    note.append(el('div', 'broom-card__aside-label', '빗자루를 모두 모았어요'));
   }
+  aside.append(note);
+  aside.append(button('꾸미기로 가기', 'btn btn--sm', () => nav.go('shop')));
   card.append(aside);
   return card;
 }

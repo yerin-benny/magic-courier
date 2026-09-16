@@ -580,6 +580,8 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 /* ---- 지도 화면 2단 ---- */
 .screen--map { max-width: 1180px; align-items: stretch; }
 .map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
+/* 오른쪽 기둥: 다음 목적지 · 빗자루 · 나의 기록 */
+.map-side { display: flex; flex-direction: column; gap: 16px; }
 @media (max-width: 900px) { .map-layout { grid-template-columns: 1fr; } }
 
 .panel { padding: 18px 20px; }
@@ -594,19 +596,20 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 .next__name { font-family: var(--font-display); font-size: 26px; color: var(--purple); margin-top: 6px; }
 .next__meta { font-size: 14px; color: var(--ink-soft); }
 
-/* 수도·지금 있는 곳·이번 배송을 같은 줄 모양으로. 줄 사이에 옅은 선을 둬 읽기 쉽게 한다. */
-.next__rows { width: 100%; margin: 14px 0 0; font-size: 14px; text-align: left; }
-.next__rows dt {
+/* 이름-값 줄 목록. 다음 목적지 카드와 기록 카드가 같이 쓴다. 줄 사이에 옅은 선을 둬 읽기 쉽게 한다. */
+.info-rows { width: 100%; margin: 10px 0 0; font-size: 14px; text-align: left; }
+.info-rows dt {
   float: left; clear: left; color: var(--ink-soft);
   padding: 9px 0; border-top: 1px solid var(--paper-edge);
 }
-.next__rows dt:first-of-type { border-top: none; }
-.next__rows dd {
+.info-rows dt:first-of-type { border-top: none; }
+.info-rows dd {
   margin: 0; padding: 9px 0; text-align: right;
   font-family: var(--font-display); color: var(--purple);
   border-top: 1px solid var(--paper-edge);
 }
-.next__rows dd:first-of-type { border-top: none; }
+.info-rows dd:first-of-type { border-top: none; }
+.panel--next .info-rows { margin-top: 14px; }
 
 .next__intro {
   width: 100%; box-sizing: border-box;
@@ -625,41 +628,39 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 .route-list__item.is-next .route-list__no { background: var(--amber); color: #fff; }
 
 /* ---- 빗자루 성장 카드 ---- */
-.broom-card { display: flex; align-items: center; gap: 20px; padding: 16px 20px; flex-wrap: wrap; }
+/* 오른쪽 기둥(320px)에 들어가는 가로형. 세로로 세우면 기둥이 왼쪽보다 훨씬 길어진다. */
+.broom-card { display: grid; grid-template-columns: 72px 1fr; gap: 6px 12px; padding: 14px 16px; align-items: center; }
 .broom-card__figure {
-  position: relative; width: 104px; height: 104px; flex: none;
-  border-radius: 20px; background: var(--sheet-cream);
-  display: flex; align-items: center; justify-content: center; padding: 10px; box-sizing: border-box;
+  position: relative; width: 72px; height: 72px;
+  border-radius: 16px; background: var(--sheet-cream);
+  display: flex; align-items: center; justify-content: center; padding: 8px; box-sizing: border-box;
 }
 .broom-card__figure img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .broom-card__stage {
-  position: absolute; left: 8px; top: 8px;
+  position: absolute; left: 4px; top: 4px;
   background: var(--lavender); color: #fff; border-radius: 999px;
-  font-family: var(--font-display); font-size: 12px; padding: 2px 9px;
+  font-family: var(--font-display); font-size: 11px; padding: 1px 7px;
 }
-.broom-card__info { flex: 1; min-width: 180px; }
+.broom-card__info { width: 100%; }
 .broom-card__label { font-size: 13px; color: var(--ink-soft); }
-.broom-card__name { font-family: var(--font-display); font-size: 22px; color: var(--purple); margin-top: 2px; }
-.broom-card__dots { display: flex; gap: 8px; margin-top: 12px; }
+.broom-card__name { font-family: var(--font-display); font-size: 18px; color: var(--purple); margin-top: 1px; }
+.broom-card__dots { display: flex; gap: 6px; margin-top: 8px; }
 .broom-card__dot {
-  width: 26px; height: 26px; border-radius: 50%;
+  width: 22px; height: 22px; border-radius: 50%; font-size: 12px;
   display: flex; align-items: center; justify-content: center;
   background: var(--paper-edge); color: var(--ink-soft);
   font-family: var(--font-display); font-size: 13px;
 }
 .broom-card__dot.is-own { background: #EFE0C0; }
 .broom-card__dot.is-on { background: var(--amber); color: #fff; }
-.broom-card__aside { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.broom-card__aside {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  border-top: 1px solid var(--paper-edge); padding-top: 10px; margin-top: 4px;
+}
 .broom-card__aside-label { font-size: 13px; color: var(--ink-soft); }
-.broom-card__aside-value { font-family: var(--font-display); font-size: 20px; color: var(--amber-deep); }
+.broom-card__aside-value { font-family: var(--font-display); font-size: 18px; color: var(--amber-deep); }
 
-/* ---- 숫자 카드 줄 ---- */
-.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
-.stat { padding: 14px 18px; }
-.stat__label { font-size: 13px; color: var(--ink-soft); }
-.stat__value { font-family: var(--font-display); color: var(--purple); margin-top: 2px; display: flex; align-items: baseline; gap: 6px; }
-.stat__value strong { font-size: 28px; font-weight: 400; }
-.stat__unit { font-size: 14px; color: var(--ink-soft); }
 
 /* 내용이 많은 화면은 넓게 쓴다. 학교 PC·전자칠판은 가로가 넉넉하다. */
 .screen--shop, .screen--ranking, .screen--passport { max-width: 1060px; align-items: stretch; }
@@ -750,3 +751,4 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 }
 .panel__subtitle { font-family: var(--font-display); font-size: 17px; color: var(--purple); margin: 0; }
 .panel__subhint { font-size: 13px; color: var(--ink-soft); }
+.broom-card__aside-note { text-align: left; }
