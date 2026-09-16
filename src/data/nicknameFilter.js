@@ -3,14 +3,14 @@
 //   - 2~8자, 한글·영문·숫자만. 공백 없음.
 //   - 숫자만으로 된 닉네임 금지
 //   - 욕설·비하 표현 포함 금지 (BANNED_WORDS)
-//   - 실명형 패턴 금지: 흔한 성씨 + 두 글자 = 세 글자 한글 이름 (예: 김민준). 실명 입력을 막기 위한 보수적 규칙이다.
-//     이름처럼 보여도 이름이 아닌 경우(이슬비 등)가 걸릴 수 있으므로 안내 문구로 다른 닉네임을 권한다.
+//
+// [변경 2026-09-16] 실명형 패턴(흔한 성씨 + 두 글자) 금지를 없앴다. 사용자(담임) 요청으로
+// 이름을 그대로 써도 되게 했다. 선생님이 교실에서 누구 기록인지 알아봐야 하기 때문이다.
+// 대신 닉네임은 계속 어디에도 공개하지 않는다 — 전국 랭킹에는 학교명만 나간다 (spec 8-3).
+// 이름처럼 보여도 이름이 아닌 닉네임(이슬비 등)이 막히던 문제도 같이 없어졌다.
 
 export const NICKNAME_MIN = 2;
 export const NICKNAME_MAX = 8;
-
-// 흔한 성씨 (실명형 패턴 판정용)
-const SURNAMES = '김이박최정강조윤장임한오서신권황안송류전홍고문양손배백허유남심노하곽성차주우구민나진지엄채원천방공현함변염여추도소석선설마길연위표명기반왕금옥육인맹제모탁국어은편용예봉';
 
 // 욕설·비하 목록. 부분 일치. 필요하면 여기에만 추가한다.
 export const BANNED_WORDS = Object.freeze([
@@ -30,14 +30,7 @@ export const NICKNAME_MESSAGES = Object.freeze({
   digits: '숫자만으로는 닉네임을 만들 수 없어요.',
   jamo: '자음이나 모음만으로는 닉네임을 만들 수 없어요.',
   banned: '쓸 수 없는 말이 들어 있어요. 다른 닉네임을 골라 주세요.',
-  realName: '실명처럼 보이는 닉네임은 쓸 수 없어요. 별명을 지어 주세요.',
 });
-
-/** 실명형 패턴: 흔한 성씨로 시작하는 세 글자 한글 */
-export function looksLikeRealName(nick) {
-  if (!/^[가-힣]{3}$/.test(nick)) return false;
-  return SURNAMES.includes(nick[0]);
-}
 
 /** 닉네임 검사. { ok, reason, message } */
 export function validateNickname(raw) {
@@ -50,7 +43,6 @@ export function validateNickname(raw) {
   if (JAMO_ONLY.test(nick)) return fail('jamo');
   const lower = nick.toLowerCase();
   if (BANNED_WORDS.some((w) => lower.includes(w.toLowerCase()))) return fail('banned');
-  if (looksLikeRealName(nick)) return fail('realName');
   return { ok: true, reason: 'ok', message: '', nickname: nick };
 }
 

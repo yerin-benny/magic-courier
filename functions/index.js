@@ -69,7 +69,9 @@ export const loginStudent = onCall({ enforceAppCheck: true }, async (request) =>
   const { schoolId, nickname, pinHash } = request.data ?? {};
   if (!SCHOOL_BY_ID[schoolId]) return { status: 'invalidSchool', message: '학교를 목록에서 골라 주세요.' };
   const nick = String(nickname ?? '').trim();
-  if (nick.length < 2 || nick.length > 10) return { status: 'invalidNickname', message: '별명은 2~10글자로 지어 주세요.' };
+  // 길이는 클라이언트(nicknameFilter.js)와 같은 2~8자로 맞춘다. 욕설 필터는 클라이언트에만 둔다
+  // (닉네임은 어디에도 공개되지 않아 서버까지 막을 필요가 없다).
+  if (nick.length < 2 || nick.length > 8) return { status: 'invalidNickname', message: '닉네임은 2~8글자로 지어 주세요.' };
   if (!/^[0-9a-f]{64}$/.test(String(pinHash ?? ''))) throw new HttpsError('invalid-argument', 'PIN 형식이 올바르지 않습니다');
 
   const studentId = `${schoolId}:${normalizeNickname(nick)}`;

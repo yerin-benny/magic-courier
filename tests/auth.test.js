@@ -1,6 +1,6 @@
 // 로그인·저장 (로컬 단계) 테스트: 닉네임 필터, PIN 해시, 저장 어댑터, 로그인 흐름, 학생 문서·gameState 왕복.
 import { describe, it, expect } from 'vitest';
-import { validateNickname, looksLikeRealName, normalizeNickname } from '../src/data/nicknameFilter.js';
+import { validateNickname, normalizeNickname } from '../src/data/nicknameFilter.js';
 import { hashPin, isValidPin, sha256Hex } from '../src/core/hash.js';
 import { createLocalStorageAdapter, createMemoryStorage } from '../src/storage/LocalStorageAdapter.js';
 import { studentIdOf } from '../src/storage/StorageAdapter.js';
@@ -35,14 +35,16 @@ describe('닉네임 필터', () => {
     expect(validateNickname('개새끼2').reason).toBe('banned');
   });
 
-  it('실명형 패턴: 흔한 성씨 + 두 글자', () => {
-    expect(looksLikeRealName('김민준')).toBe(true);
-    expect(looksLikeRealName('박서연')).toBe(true);
-    expect(looksLikeRealName('별빛이')).toBe(false); // 흔한 성씨 아님
-    expect(looksLikeRealName('김민준이')).toBe(false); // 네 글자
-    expect(looksLikeRealName('김밥')).toBe(false); // 두 글자
-    expect(validateNickname('이지은').reason).toBe('realName');
-    expect(validateNickname('이지은짱').ok).toBe(true);
+  it('이름을 그대로 써도 된다 (2026-09-16 실명 금지 규칙 삭제)', () => {
+    for (const n of ['김민준', '박서연', '이지은', '남궁민수']) {
+      expect(validateNickname(n).ok, n).toBe(true);
+    }
+  });
+
+  it('이름처럼 보이는 닉네임도 막히지 않는다', () => {
+    for (const n of ['이슬비', '강하늘', '별빛이']) {
+      expect(validateNickname(n).ok, n).toBe(true);
+    }
   });
 
   it('정규화', () => {
@@ -124,8 +126,10 @@ describe('로그인 흐름', () => {
 
   it('닉네임·PIN 검사 실패', async () => {
     const st = newStorage();
-    expect((await login(st, { schoolId: school, nickname: '김민준', pin: '1234' })).status).toBe('invalidNickname');
+    expect((await login(st, { schoolId: school, nickname: '개새끼', pin: '1234' })).status).toBe('invalidNickname');
     expect((await login(st, { schoolId: school, nickname: '별빛', pin: '12' })).status).toBe('invalidPin');
+    // 이름으로 등록해도 통과한다 (2026-09-16 실명 허용)
+    expect((await login(st, { schoolId: school, nickname: '김민준', pin: '1234' })).status).toBe('created');
   });
 
   it('세션 복원과 로그아웃', async () => {

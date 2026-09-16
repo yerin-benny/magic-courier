@@ -42,7 +42,7 @@ export function postOfficeName(schoolId) {
 
 /**
  * 우체국 이름은 학교에서 나오는 값이라 저장본을 열 때마다 다시 만든다.
- * 예전 저장본(지역 + 별명으로 만들던 이름)도 이 자리에서 새 이름으로 바뀐다.
+ * 예전 저장본(지역 + 닉네임으로 만들던 이름)도 이 자리에서 새 이름으로 바뀐다.
  */
 export function refreshDerived(doc) {
   if (!doc) return doc;

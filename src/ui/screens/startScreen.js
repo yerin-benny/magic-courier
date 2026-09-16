@@ -1,7 +1,7 @@
 // 1. 시작 화면 — 앱을 열면 처음 보는 화면.
 //
 //   - 이 기기에 로그인 기록이 있으면 "이어서 하기"를 먼저, 크게 보여 준다.
-//     학교 컴퓨터에서 매번 학교·별명·PIN 을 다시 치게 하면 수업 시간이 거기서 다 간다.
+//     학교 컴퓨터에서 매번 학교·닉네임·PIN 을 다시 치게 하면 수업 시간이 거기서 다 간다.
 //   - 이어서 할 때는 지금까지 모은 것(우체국 이름, 스탬프, 회차)을 같이 보여 준다.
 //     "내 것"이 남아 있다는 것이 보여야 다시 들어온다.
 //   - 처음이면 네 배달부 그림을 보여 주고 바로 등록으로 보낸다.
@@ -100,7 +100,7 @@ export function renderStartScreen(root, params, nav) {
     }
     actions.append(button('세계여행 시작', 'btn btn--primary btn--big', () => nav.go('login')));
     screen.append(actions);
-    screen.append(el('p', 'start__hint', '학교와 별명만 정하면 바로 시작해요'));
+    screen.append(el('p', 'start__hint', '학교와 닉네임만 정하면 바로 시작해요'));
     root.append(screen);
     return;
   }
