@@ -1,0 +1,10 @@
+node_modules
+.next
+.next-e2e
+.local-data
+functions/lib
+functions/node_modules
+package-lock.json
+functions/package-lock.json
+public
+test-results

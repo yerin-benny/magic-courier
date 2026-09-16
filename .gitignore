@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.local-data/
+test-results/
+playwright-report/
+functions/lib/
+functions/node_modules/
+*.log
+*.tsbuildinfo
+
+.next-e2e/
+functions/.secret.local

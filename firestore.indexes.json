@@ -1,0 +1,1 @@
+{"indexes":[],"fieldOverrides":[{"collectionGroup":"rateLimits","fieldPath":"resetAt","indexes":[]},{"collectionGroup":"deliverySessions","fieldPath":"history","indexes":[]},{"collectionGroup":"deliverySessions","fieldPath":"problems","indexes":[]},{"collectionGroup":"leaderboardAggregates","fieldPath":"schools","indexes":[]}]}

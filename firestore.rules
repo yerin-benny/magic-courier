@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  match /students/{uid} { allow get: if request.auth != null && request.auth.uid == uid; allow list, write: if false; }
+  match /schools/{id} { allow read: if request.auth != null; allow write: if false; }
+  match /leaderboardAggregates/{id} { allow get: if request.auth != null; allow list, write: if false; }
+  match /{document=**} { allow read, write: if false; }
+ }
+}

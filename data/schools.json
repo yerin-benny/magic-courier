@@ -1,0 +1,7 @@
+[
+  { "id": "sample-seoul", "name": "별빛초등학교 (샘플)", "region": "서울" },
+  { "id": "sample-busan", "name": "바다초등학교 (샘플)", "region": "부산" },
+  { "id": "sample-jeju", "name": "오름초등학교 (샘플)", "region": "제주" },
+  { "id": "sample-gyeonggi", "name": "구름초등학교 (샘플)", "region": "경기" },
+  { "id": "sample-daejeon", "name": "숲속초등학교 (샘플)", "region": "대전" }
+]
