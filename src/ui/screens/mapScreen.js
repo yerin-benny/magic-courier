@@ -254,21 +254,23 @@ export function renderMapScreen(root, params, nav) {
   next.append(el('div', 'panel__eyebrow', '다음 목적지'));
   next.append(renderFlag(dest, { size: 'lg' }));
   next.append(el('div', 'next__name', dest.name));
-  next.append(el('div', 'next__meta', `${CONTINENTS[dest.continent].name} · 수도 ${dest.capital}`));
-  next.append(el('p', 'next__intro', dest.intro));
+  next.append(el('div', 'next__meta', CONTINENTS[dest.continent].name));
 
   // 문제를 풀다가 지도로 나온 경우에는 "이어서"로 바꿔 같은 자리로 돌려보낸다
   const session = gameState.session;
   const inProgress = !!session && !session.isComplete;
   const resumeScreen = session ? (session.isComplete ? 'success' : 'problem') : 'request';
 
+  // 수도·현재 위치·이번 배송을 같은 줄 모양으로 늘어놓고, 그 아래 나라 소개를 붙인다.
   const rows = el('dl', 'next__rows');
+  rows.append(el('dt', null, '수도'), el('dd', null, dest.capital));
   rows.append(el('dt', null, '지금 있는 곳'), el('dd', null, getCountry(locationId).name));
   rows.append(
     el('dt', null, '이번 배송'),
     el('dd', null, inProgress ? `분수 문제 ${session.index} / ${session.total} 푸는 중` : '분수 문제 5개'),
   );
   next.append(rows);
+  next.append(el('p', 'next__intro', dest.intro));
 
   next.append(
     button(

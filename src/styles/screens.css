@@ -587,14 +587,33 @@ img.flag { object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(
 .panel__eyebrow { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
 .panel__eyebrow::before { content: '✦ '; }
 
-.panel--next { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.panel--next {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;
+  background: linear-gradient(180deg, #FFFBF3 0%, #F7F2FB 100%);
+}
 .next__name { font-family: var(--font-display); font-size: 26px; color: var(--purple); margin-top: 6px; }
 .next__meta { font-size: 14px; color: var(--ink-soft); }
-.next__intro { font-size: 14px; line-height: 1.6; margin: 10px 0 0; color: var(--ink); }
-.next__rows { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; width: 100%; margin: 14px 0 4px; font-size: 14px; text-align: left; }
-.next__rows dt { color: var(--ink-soft); }
-.next__rows dd { margin: 0; font-family: var(--font-display); color: var(--purple); text-align: right; }
-.next__go { width: 100%; margin-top: 12px; font-size: 20px; padding: 14px 20px; }
+
+/* 수도·지금 있는 곳·이번 배송을 같은 줄 모양으로. 줄 사이에 옅은 선을 둬 읽기 쉽게 한다. */
+.next__rows { width: 100%; margin: 14px 0 0; font-size: 14px; text-align: left; }
+.next__rows dt {
+  float: left; clear: left; color: var(--ink-soft);
+  padding: 9px 0; border-top: 1px solid var(--paper-edge);
+}
+.next__rows dt:first-of-type { border-top: none; }
+.next__rows dd {
+  margin: 0; padding: 9px 0; text-align: right;
+  font-family: var(--font-display); color: var(--purple);
+  border-top: 1px solid var(--paper-edge);
+}
+.next__rows dd:first-of-type { border-top: none; }
+
+.next__intro {
+  width: 100%; box-sizing: border-box;
+  font-size: 14px; line-height: 1.6; margin: 12px 0 0; color: var(--ink); text-align: left;
+  background: rgba(255, 255, 255, 0.6); border-radius: 14px; padding: 10px 14px;
+}
+.next__go { width: 100%; margin-top: 14px; font-size: 20px; padding: 14px 20px; }
 
 .route-list__no {
   width: 24px; height: 24px; flex: none; border-radius: 50%;
