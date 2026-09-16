@@ -4,8 +4,8 @@
 // 설계 요점
 //   - Firebase 모듈은 필요할 때 동적 import 한다. 설정이 없으면 이 파일은 아무것도 불러오지 않고,
 //     테스트와 로컬 모드는 Firebase 를 건드리지 않는다.
-//   - 로그인은 학교·닉네임·PIN 이라 Firebase Auth 의 기본 제공자를 쓸 수 없다.
-//     Cloud Functions 가 PIN 을 확인하고 커스텀 토큰을 발급하면 signInWithCustomToken 으로 붙는다.
+//   - 로그인은 학교·닉네임·비밀번호라 Firebase Auth 의 기본 제공자를 쓸 수 없다.
+//     Cloud Functions 가 비밀번호를 확인하고 커스텀 토큰을 발급하면 signInWithCustomToken 으로 붙는다.
 //     그래야 보안 규칙에서 "내 문서만 쓴다"를 auth.uid 로 강제할 수 있다.
 //   - 학생 문서 id 는 로컬과 달리 auth uid 다. 원래 id(`학교:닉네임`)는 문서 안에 studentId 로 남는다.
 //   - ranking·lastRankVerdict 는 서버 소유 필드다. 클라이언트 저장에서 빼고 보낸다

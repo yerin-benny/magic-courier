@@ -1,6 +1,7 @@
 // 로그인·계정 생성 (spec 8장). DOM 없음.
-//   학교 선택 + 닉네임 + PIN 4자리.
-//   같은 학교·같은 닉네임 문서가 있으면 PIN 을 대조하고, 없으면 새로 만든다.
+//   학교 선택 + 닉네임 + 비밀번호(숫자 4자리).
+//   같은 학교·같은 닉네임 문서가 있으면 비밀번호를 대조하고, 없으면 새로 만든다.
+//   화면에서는 "비밀번호"라고 부르지만 코드의 식별자는 pin/pinHash 그대로다 (2026-09-16).
 //
 // login(storage, { schoolId, nickname, pin }) →
 //   { status: 'ok' | 'created', doc }
@@ -18,12 +19,12 @@ export const SCHOOL_BY_ID = SCHOOL_MAP;
 
 export const AUTH_MESSAGES = Object.freeze({
   invalidSchool: '학교를 목록에서 골라 주세요.',
-  invalidPin: 'PIN 은 숫자 4자리예요.',
-  wrongPin: 'PIN 이 달라요. 다시 확인해 주세요.',
+  invalidPin: '비밀번호는 숫자 4개예요.',
+  wrongPin: '비밀번호가 달라요. 다시 확인해 주세요.',
 });
 
 export async function login(storage, { schoolId, nickname, pin }) {
-  // 서버 저장소면 PIN 확인과 문서 생성은 Cloud Functions 가 한다 (spec 9-1).
+  // 서버 저장소면 비밀번호 확인과 문서 생성은 Cloud Functions 가 한다 (spec 9-1).
   // 입력 형식 검사는 네트워크를 타기 전에 여기서 먼저 걸러 준다.
   if (storage?.login) {
     const pre = validateCredentials({ schoolId, nickname, pin });

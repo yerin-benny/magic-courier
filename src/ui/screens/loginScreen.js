@@ -1,11 +1,14 @@
-// 2. 로그인 — 학교 선택(고정 목록) + 닉네임 + PIN 4자리 (spec 8장).
+// 2. 로그인 — 학교 선택(고정 목록) + 닉네임 + 비밀번호 숫자 4자리 (spec 8장).
 //
 //   - 학교는 자유 입력을 막는다. "별빛초"와 "별빛초등학교"가 갈라지고 장난 학교명이 랭킹에 오른다.
 //   - [변경 2026-09-16] 이름을 그대로 써도 된다. 선생님이 교실에서 누구 기록인지 알아봐야 한다.
 //     닉네임은 그래도 어디에도 공개하지 않는다 (전국 랭킹에는 학교명만).
-//   - 처음 온 학생과 다시 온 학생이 같은 칸을 쓴다. 같은 학교·닉네임·PIN 을 넣으면 이어진다는 것을
+//   - 처음 온 학생과 다시 온 학생이 같은 칸을 쓴다. 같은 학교·닉네임·비밀번호를 넣으면 이어진다는 것을
 //     화면에 적어 둔다. 6학년이 "가입"과 "로그인"을 구분해 누르게 하지 않는다.
-//   - PIN 은 4칸으로 보이게 한다. 몇 자를 넣었는지 눈으로 세어야 한다.
+//   - [변경 2026-09-16] 화면에서는 "PIN" 대신 "비밀번호"라고 부른다. 6학년이 PIN 이라는 말을 헷갈려한다.
+//     형식은 그대로 숫자 4자리다 (화면 키패드로만 칠 수 있어야 하고, 외우기 쉬워야 한다).
+//     식별자(pinHash, isValidPin)는 영어 그대로 둔다.
+//   - 4칸으로 보이게 한다. 몇 자를 넣었는지 눈으로 세어야 한다.
 
 import { el, button } from '../dom.js';
 import { SCHOOLS, login } from '../../game/auth.js';
@@ -43,7 +46,7 @@ export function renderLoginScreen(root, params, nav) {
   }
   const hello = el('div', 'login__hello');
   hello.append(el('div', 'login__hello-title', '마법 우체국 접수대'));
-  hello.append(el('div', 'login__hello-sub', '전에 등록했다면 같은 학교·닉네임·PIN 을 넣으면 이어져요'));
+  hello.append(el('div', 'login__hello-sub', '전에 등록했다면 같은 학교·닉네임·비밀번호를 넣으면 이어져요'));
   head.append(hello);
   form.append(head);
 
@@ -67,7 +70,7 @@ export function renderLoginScreen(root, params, nav) {
   nick.placeholder = '닉네임을 지어 주세요';
   form.append(field('닉네임', nick, `${NICKNAME_MIN}~${NICKNAME_MAX}자. 이름을 그대로 써도 돼요. (한글·영문·숫자)`));
 
-  // ---- PIN ----
+  // ---- 비밀번호 (숫자 4자리) ----
   const pin = el('input', 'field__input field__input--pin');
   pin.type = 'password';
   pin.inputMode = 'numeric';
@@ -88,7 +91,7 @@ export function renderLoginScreen(root, params, nav) {
     pin.value = pin.value.replace(/\D/g, '').slice(0, 4);
     dotEls.forEach((d, i) => d.classList.toggle('is-filled', i < pin.value.length));
   });
-  form.append(field('PIN 4자리', pinBox, '내 기록을 지키는 비밀 숫자예요. 잊지 않게 기억해 두세요.'));
+  form.append(field('비밀번호', pinBox, '숫자 4개로 만들어요. 내 기록을 지키는 번호니까 잊지 않게 기억해 두세요.'));
 
   const message = el('p', 'form__message');
   message.setAttribute('role', 'alert');

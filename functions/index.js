@@ -72,7 +72,7 @@ export const loginStudent = onCall({ enforceAppCheck: true }, async (request) =>
   // 길이는 클라이언트(nicknameFilter.js)와 같은 2~8자로 맞춘다. 욕설 필터는 클라이언트에만 둔다
   // (닉네임은 어디에도 공개되지 않아 서버까지 막을 필요가 없다).
   if (nick.length < 2 || nick.length > 8) return { status: 'invalidNickname', message: '닉네임은 2~8글자로 지어 주세요.' };
-  if (!/^[0-9a-f]{64}$/.test(String(pinHash ?? ''))) throw new HttpsError('invalid-argument', 'PIN 형식이 올바르지 않습니다');
+  if (!/^[0-9a-f]{64}$/.test(String(pinHash ?? ''))) throw new HttpsError('invalid-argument', '비밀번호 형식이 올바르지 않습니다');
 
   const studentId = `${schoolId}:${normalizeNickname(nick)}`;
   const uid = sha256(studentId);
@@ -82,7 +82,7 @@ export const loginStudent = onCall({ enforceAppCheck: true }, async (request) =>
 
   let status;
   if (snap.exists) {
-    if (snap.data().pinHash !== hash) return { status: 'wrongPin', message: 'PIN 이 달라요. 다시 확인해 주세요.' };
+    if (snap.data().pinHash !== hash) return { status: 'wrongPin', message: '비밀번호가 달라요. 다시 확인해 주세요.' };
     status = 'ok';
     await ref.update({ lastLoginAt: FieldValue.serverTimestamp() });
   } else {
