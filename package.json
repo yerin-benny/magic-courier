@@ -1,0 +1,33 @@
+{
+  "name": "magic-courier",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "마법 배달부의 세계일주 — 6학년 2학기 분수의 나눗셈 복습 웹앱",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify:generators": "node scripts/verifyGenerators.mjs",
+    "verify:word": "node scripts/verifyWordProblems.mjs",
+    "verify:routes": "node scripts/simulateRoutes.mjs",
+    "assets:flags": "node scripts/copyFlags.mjs",
+    "assets:cut": "python scripts/cutAssets.py",
+    "sync:functions": "node scripts/syncFunctionsLib.mjs",
+    "verify:functions": "node scripts/syncFunctionsLib.mjs --verify"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@fontsource/gowun-dodum": "^5.3.0",
+    "@fontsource/jua": "^5.3.0",
+    "firebase": "^12.19.0",
+    "flag-icons": "^7.5.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  }
+}

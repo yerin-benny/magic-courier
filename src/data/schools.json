@@ -1,0 +1,25 @@
+{
+  "_note": "임시 목록. 학교 목록 데이터 출처(나이스 API 또는 정적 JSON)가 정해지면 전체 목록으로 교체한다. id 는 바꾸지 않는다.",
+  "schools": [
+    { "id": "busan-dongnae", "name": "동래초등학교", "region": "부산" },
+    { "id": "busan-suyeong", "name": "수영초등학교", "region": "부산" },
+    { "id": "busan-haeundae", "name": "해운대초등학교", "region": "부산" },
+    { "id": "busan-gwangan", "name": "광안초등학교", "region": "부산" },
+    { "id": "busan-namcheon", "name": "남천초등학교", "region": "부산" },
+    { "id": "busan-sajik", "name": "사직초등학교", "region": "부산" },
+    { "id": "busan-yeonsan", "name": "연산초등학교", "region": "부산" },
+    { "id": "busan-geoje", "name": "거제초등학교", "region": "부산" },
+    { "id": "busan-dongsam", "name": "동삼초등학교", "region": "부산" },
+    { "id": "busan-yeongdo", "name": "영도초등학교", "region": "부산" },
+    { "id": "busan-choryang", "name": "초량초등학교", "region": "부산" },
+    { "id": "busan-daeyeon", "name": "대연초등학교", "region": "부산" },
+    { "id": "busan-yongho", "name": "용호초등학교", "region": "부산" },
+    { "id": "busan-munhyeon", "name": "문현초등학교", "region": "부산" },
+    { "id": "busan-gupo", "name": "구포초등학교", "region": "부산" },
+    { "id": "busan-deokcheon", "name": "덕천초등학교", "region": "부산" },
+    { "id": "busan-hwamyeong", "name": "화명초등학교", "region": "부산" },
+    { "id": "busan-geumjeong", "name": "금정초등학교", "region": "부산" },
+    { "id": "busan-jangjeon", "name": "장전초등학교", "region": "부산" },
+    { "id": "busan-myeongji", "name": "명지초등학교", "region": "부산" }
+  ]
+}

@@ -1,0 +1,65 @@
+rules_version = '2';
+
+// 마법 배달부의 세계일주 — Firestore 보안 규칙 (spec 9-1)
+//
+// 원칙
+//   1. 학생은 자기 문서만 읽고 쓴다. uid 는 Cloud Functions 가 발급한 커스텀 토큰의 것이고,
+//      `sha256(학교id:닉네임)` 이다.
+//   2. 랭킹에 영향을 주는 값은 클라이언트가 쓸 수 없다. 배송 판정, 학교 배송량, 집계 문서는
+//      전부 Cloud Functions(Admin SDK)만 쓴다. Admin SDK 는 이 규칙을 통과한다.
+//   3. 학교 문서와 집계 문서는 누구나 읽는다. 개인 닉네임은 여기에 담지 않는다 (spec 8-3).
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 서버가 관리하는 필드. 클라이언트 쓰기에서 값이 바뀌면 거부한다.
+    function keepsServerFields(uid) {
+      let incoming = request.resource.data;
+      let current = resource.data;
+      return (!('ranking' in incoming) || !('ranking' in current) || incoming.ranking == current.ranking)
+          && (!('lastRankVerdict' in incoming) || !('lastRankVerdict' in current) || incoming.lastRankVerdict == current.lastRankVerdict);
+    }
+
+    // 학생 문서 — 본인만. 게임 진행 상태는 마음대로 쓰되 랭킹 필드는 건드릴 수 없다.
+    match /students/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null && request.auth.uid == uid
+                    && !('ranking' in request.resource.data && request.resource.data.ranking.count > 0);
+      allow update: if request.auth != null && request.auth.uid == uid && keepsServerFields(uid);
+      allow delete: if false;
+
+      // 최근 60문항 제외 큐 등 진행 상태
+      match /state/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+
+      // 배송 시작·완료 기록 — 45초 판정의 근거다. 읽기만 허용하고 쓰기는 서버만 한다.
+      match /deliveries/{deliveryId} {
+        allow read: if request.auth != null && request.auth.uid == uid;
+        allow write: if false;
+      }
+    }
+
+    // PIN 해시와 당일 반영 건수 — 클라이언트는 읽지도 쓰지도 못한다.
+    match /credentials/{uid} {
+      allow read, write: if false;
+    }
+
+    // 학교 배송량 — 누구나 읽고, 쓰기는 서버만.
+    match /schools/{schoolId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 집계 문서 — 화면이 읽는 문서 하나 (spec 9-3).
+    match /aggregates/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 그 밖의 경로는 전부 막는다.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

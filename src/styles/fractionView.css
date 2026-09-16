@@ -1,0 +1,19 @@
+/* 표시용 분수 */
+.frac {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-display);
+  color: var(--purple);
+}
+.frac__whole { font-size: 1.1em; }
+.frac__stack { display: inline-flex; flex-direction: column; align-items: center; line-height: 1.1; font-size: 0.85em; }
+.frac__num { border-bottom: 3px solid currentColor; padding: 0 5px 1px; }
+.frac__den { padding: 1px 5px 0; }
+.frac-op { display: inline-block; margin: 0 10px; font-family: var(--font-display); color: var(--purple); }
+
+/* 문장 안의 분수: 글줄 가운데에 세로 분수를 끼운다 */
+.sentence { line-height: 1.9; }
+.frac--inline { vertical-align: middle; margin: 0 3px; }
+.frac--inline .frac__stack { font-size: 0.8em; line-height: 1.05; }
+.frac--inline .frac__num { border-bottom-width: 2px; }

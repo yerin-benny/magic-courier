@@ -1,0 +1,20 @@
+{
+  "name": "magic-courier-functions",
+  "version": "0.1.0",
+  "private": true,
+  "description": "마법 배달부의 세계일주 — 배송 판정과 학교 랭킹 집계 (spec 9장)",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions,firestore,auth",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^6.1.1"
+  }
+}

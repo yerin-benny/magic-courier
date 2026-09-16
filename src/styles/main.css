@@ -1,0 +1,62 @@
+/* 공통 스타일. 캐릭터 시트의 그림체(둥근 실루엣, 수채 종이 질감, 8색 팔레트)에 맞춘 디자인 토큰. */
+:root {
+  --lavender: #6B5B95; /* 망토 라벤더 */
+  --purple: #4E4370;   /* 그림자 퍼플 */
+  --cream: #F4EBDD;    /* 종이 크림 */
+  --sheet-cream: #F4ECDE; /* 원본 시트 배경색. 아이템 그림 뒤에 까는 판에 쓴다 (아래 주석) */
+  --sky: #CFE2F3;      /* 하늘 */
+  --brown: #8B6B45;    /* 나무 브라운 */
+  --amber: #E8A838;    /* 앰버 */
+  --sage: #7FA37A;     /* 세이지 그린 */
+  --coral: #E1806B;    /* 코랄 */
+
+  /* 파생 톤 (팔레트를 흐리거나 진하게 한 것) */
+  --paper: #FFF9EE;          /* 카드 종이 */
+  --paper-edge: #E9D9BC;     /* 종이 테두리 */
+  --ink: #4E4370;            /* 본문 글자 = 퍼플 */
+  --ink-soft: #8B6B45;       /* 보조 글자 = 브라운 */
+  --amber-deep: #C98A1F;
+  --sage-deep: #5F8A5A;
+  --sky-deep: #9EC3E0;
+  --shadow: rgba(78, 67, 112, 0.18);
+
+  --font-display: 'Jua', 'Malgun Gothic', '맑은 고딕', sans-serif;      /* 제목·버튼·숫자 */
+  --font-body: 'Gowun Dodum', 'Malgun Gothic', '맑은 고딕', sans-serif; /* 본문 */
+
+  --radius-card: 26px;
+  --radius-btn: 999px;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--sky);
+}
+
+/* 하늘 배경은 main.js 가 body 에 --sky-image 를 넣는다 (manifest 경유) */
+body {
+  background-image: var(--sky-image, none);
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+}
+
+#app {
+  min-height: 100vh;
+  padding: 20px 16px 40px;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+button { font-family: var(--font-display); }
+
+* { -webkit-tap-highlight-color: transparent; }
