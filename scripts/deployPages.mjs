@@ -28,7 +28,11 @@ try {
   console.log('> gh-pages 워크트리 준비');
   run('git', ['worktree', 'add', '--detach', wt]);
   const inWt = { cwd: wt };
-  execFileSync('git', ['checkout', '--orphan', 'gh-pages'], { ...inWt, stdio: 'ignore' });
+  // gh-pages 브랜치는 이미 있으므로 --orphan gh-pages 는 실패한다.
+  // 매번 새 이름의 고아 브랜치를 만들어 커밋하고, gh-pages 로 force push 한다.
+  // 배포본은 빌드하면 다시 만들 수 있으니 히스토리를 쌓지 않는다.
+  const temp = `pages-${Date.now()}`;
+  execFileSync('git', ['checkout', '--orphan', temp], { ...inWt, stdio: 'ignore' });
   execFileSync('git', ['rm', '-rq', '--cached', '.'], { ...inWt, stdio: 'ignore' });
   for (const name of execFileSync('git', ['ls-files', '-o', '--directory'], { ...inWt, encoding: 'utf8' }).split('\n')) {
     const t = name.trim();
@@ -42,9 +46,14 @@ try {
   console.log('> 커밋·푸시');
   run('git', ['add', '-A'], inWt);
   run('git', ['-c', 'core.safecrlf=false', 'commit', '-q', '-m', `GitHub Pages 배포본 (${new Date().toISOString().slice(0, 16)})`], inWt);
-  run('git', ['push', '-f', 'origin', 'gh-pages'], inWt);
+  run('git', ['push', '-f', 'origin', 'HEAD:gh-pages'], inWt);
   console.log('\n끝났습니다: https://yerin-benny.github.io/magic-courier/');
   console.log('(반영까지 1~2분 걸립니다)');
 } finally {
-  run('git', ['worktree', 'remove', '--force', wt]);
+  try {
+    run('git', ['worktree', 'remove', '--force', wt]);
+  } catch {
+    /* 워크트리가 이미 없으면 넘어간다 */
+  }
+  run('git', ['worktree', 'prune']);
 }
